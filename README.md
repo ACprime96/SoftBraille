@@ -25,4 +25,4 @@ Change the path in config.json file to ur home directory path
 The icon images path must be properly specified
 
 ## Step-5
-Run the main class g1.py
+Run the main class start_Gui.py
