@@ -10,14 +10,17 @@
 
 ## Step-1  
 ```
-pip install requirements.txt
+          pip install requirements.txt
 ```
           
 ## Step-2
+          Download vgg16.npy file from [here](https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCtCpI6HTJOMrneN-Qdv3ywQP5poecM)
+
+## Step-3
           Change the path in config.json file to ur home directory path
           
-## Step-3
+## Step-4
           The icon images path must be properly specified
 
-## Step-4
+## Step-5
           Run the main class g1.py
