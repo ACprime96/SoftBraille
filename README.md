@@ -14,7 +14,7 @@ pip install requirements.txt
 ```
           
 ## Step-2
-Download `vgg16.npy` file from [here](https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCtCpI6HTJOMrneN-Qdv3ywQP5poecM)
+Download `vgg16.npy` file from [here](https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCtCpI6HTJOMrneN-Qdv3ywQP5poecM).
 
 Move `vgg16.npy` file to hed/models
 
