@@ -19,10 +19,10 @@ Download `vgg16.npy` file from [here](https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCt
 Move `vgg16.npy` file to hed/models
 
 ## Step-3
-Change the path in config.json file to ur home directory path
+Change the path in `config.json` file to ur home directory path
           
 ## Step-4
 The icon images path must be properly specified
 
 ## Step-5
-Run the main class start_Gui.py
+Run the main class `start_Gui.py`
