@@ -277,13 +277,16 @@ class Ui_Win2(Ui_MainWindow):
 
     def addimage(self):
         fil=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
-        fi = open(fil,"r")
-        contents=fi.read()
-        fi.close()
-        f=open(get_path.get_english(),'a+')
-        f.write("\n"+"\n"+contents)
-        self.textEdit.append(contents)
-        f.close()
+        try:
+            fi = open(fil,"r")
+            contents=fi.read()
+            fi.close()
+            f=open(get_path.get_english(),'a+')
+            f.write("\n"+"\n"+contents)
+            self.textEdit.append(contents)
+            f.close()
+        except Exception as e:
+            print("No file chosen!!")
 
     def setupUi(self, Win2):
         Win2.setObjectName("Win2")
@@ -367,7 +370,7 @@ class Ui_Win2(Ui_MainWindow):
         self.toolBar.setObjectName("toolBar")
         Win2.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
         self.actionInsert = QtWidgets.QAction(Win2)
-        self.actionInsert.setCheckable(True)
+        # self.actionInsert.setCheckable(True)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(os.getcwd() + "/icons/insert.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionInsert.setIcon(icon)

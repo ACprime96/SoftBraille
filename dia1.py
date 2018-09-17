@@ -72,15 +72,15 @@ class Ui_Dialog(object):
             # os.mkdir('braille_images')
             # f1="/Users/adityachandra/" + s
 
-            os.chdir(home)
-            os.mkdir(s)
+            # os.chdir(home)
             f1=home + "/" + s
-            print (f1)
-            os.chdir(f1)
-            open("eng.txt","w")
-            open("br.txt","w")
-            os.mkdir('images')
-            os.mkdir('braille_images')
+            os.mkdir(f1)
+            # print (f1)
+            # os.chdir(f1)
+            open(f1+"/eng.txt","w")
+            open(f1+"/br.txt","w")
+            os.mkdir(f1+'/images')
+            os.mkdir(f1+'/braille_images')
 
             # print(f1)
 
