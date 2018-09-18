@@ -49,4 +49,7 @@ class QExampleLabel (QtWidgets.QLabel):
             i_obj = img_braille(file_path)
             i_obj.convert_img()
         if e.key() == Qt.Key_Escape:
-            self.currentQRubberBand.hide()
+            try:
+                self.currentQRubberBand.hide()
+            except Exception as e:
+                pass 
