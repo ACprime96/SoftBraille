@@ -49,7 +49,7 @@ class Ui_MainWindow(object):
         fname=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
         self.scene=QGraphicsScene()
         a=QPixmap(fname)
-        self.scene.addPixmap(a.scaled(560,560))
+        self.scene.addPixmap(a.scaled(560,560,QtCore.Qt.IgnoreAspectRatio,QtCore.Qt.SmoothTransformation))
         self.graphicsView.setScene(self.scene)
 
     def roi(self):
@@ -154,7 +154,7 @@ class Ui_MainWindow(object):
         self.scene=QGraphicsScene()
         global fname
         a=QPixmap(fname)
-        self.scene.addPixmap(a.scaled(560,560))
+        self.scene.addPixmap(a.scaled(560,560,QtCore.Qt.IgnoreAspectRatio,QtCore.Qt.SmoothTransformation))
         self.graphicsView.setScene(self.scene)
 
 
