@@ -48,7 +48,7 @@ def text2nemeth(checkStr):
                 continue
 
         # Checking if the character is a digit (Page 12)
-        print(checkStr[index])
+        # print(checkStr[index])
         if(checkStr[index].isdigit()):
             if(not numericIndicator):
                 brl.append(nm.numericIndicator)
@@ -60,13 +60,13 @@ def text2nemeth(checkStr):
         #Checking if the character is a mathematical symbol (Page 12)
         if(checkStr[index] in nm.mathsym.keys()):
             data = nm.mathsym[checkStr[index]]
-            print(len(data),checkStr[index])
+            # print(len(data),checkStr[index])
             if(len(data)>6):
                 data = map(''.join, zip(*[iter(data)] * 6))
                 brl += list(data)
             else:
                 brl.append(data)
-            print(brl)
+            # print(brl)
             index += 1
             continue
 
@@ -89,4 +89,10 @@ def text2nemeth(checkStr):
             brl.append(eng.specialCharacters[checkStr[index]])
             index += 1
             continue
+
+        # added new stub
+        else :
+            return checkStr
+        # ended new stub
+
     return(brl2unicode.toUnicodeSymbols([brl], flatten=True))

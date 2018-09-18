@@ -9,7 +9,7 @@ def toUnicodeSymbols(brl, flatten=False):
     retObj=[]
 
     for wrd in brl:
-        print(wrd)
+        # print(wrd)
         retObj.append([])
         for ch in wrd:
             binary_repr = int(ch[::-1], 2)

@@ -500,6 +500,13 @@ class Ui_Ocr(Ui_Win2):
         # s = brl.toUnicodeSymbols(example, flatten=True)
         # cursor.insertText(s)
         example=brl.text2nemeth(textSelected)
+        if(example == textSelected):
+            self.msg = QtWidgets.QMessageBox()
+            self.msg.setIcon(QtWidgets.QMessageBox.Critical)
+            self.msg.setText("This Sentence cannot be converted to Nemeth Braille!!")
+            self.msg.setWindowTitle("ERROR!!")
+            self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            self.msg.show()
         cursor.insertText(example)
 
     def updateText(self):
