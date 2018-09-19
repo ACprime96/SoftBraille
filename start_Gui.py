@@ -13,6 +13,7 @@ from PyQt5.QtCore import *
 from dia1 import Ui_Dialog
 from cropper import QExampleLabel
 import os
+from pathlib import Path
 from imgtes import imgt
 import main as brl
 import json
@@ -43,6 +44,38 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.Dialog)
         # self.config=self.ui.get_stuff()
         self.Dialog.show()
+
+# Open Project starts here
+    def project_Selected(self,item):
+        home=str(Path.home())
+        fpath=home+"/"+item.text()
+        get_path.set_project_path(fpath)
+
+    def openpro(self):
+        home=str(Path.home())
+        list=[]
+        for d in os.listdir(home):
+            if(os.path.exists(home+"/"+d+"/braille_images") and os.path.exists(home+"/"+d+"/images") and os.path.exists(home+"/"+d+"/eng.txt") and os.path.exists(home+"/"+d+"/br.txt")):
+                list.append(d)
+        if len(list)==0:
+            self.msg = QtWidgets.QMessageBox()
+            self.msg.setIcon(QtWidgets.QMessageBox.Critical)
+            self.msg.setText("No Prjects have been created yet!!")
+            self.msg.setWindowTitle("ERROR!!")
+            self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            self.msg.show()
+
+        else:
+            self.prolist=QtWidgets.QListWidget()
+            self.prolist.setWindowTitle("Project Folders")
+            self.prolist.setWindowModality(QtCore.Qt.ApplicationModal)
+            self.prolist.resize(150,200)
+            self.prolist.addItems(list)
+            self.prolist.itemClicked.connect(self.project_Selected)
+            self.prolist.itemClicked.connect(self.prolist.close)
+            self.prolist.show()
+
+# Open Project ends here
 
     def loadpro(self):
         global fname
@@ -206,6 +239,7 @@ class Ui_MainWindow(object):
 
         self.actionOpen_Project = QtWidgets.QAction(MainWindow)
         self.actionOpen_Project.setObjectName("actionOpen_Project")
+        self.actionOpen_Project.triggered.connect(self.openpro)
 
         self.actionLoad = QtWidgets.QAction(MainWindow)
         self.actionLoad.setObjectName("actionLoad")
@@ -213,12 +247,15 @@ class Ui_MainWindow(object):
 
         self.actionSave = QtWidgets.QAction(MainWindow)
         self.actionSave.setObjectName("actionSave")
+        self.actionSave.setEnabled(False)
 
         self.actionUndo = QtWidgets.QAction(MainWindow)
         self.actionUndo.setObjectName("actionUndo")
+        self.actionUndo.setEnabled(False)
 
         self.actionRedo = QtWidgets.QAction(MainWindow)
         self.actionRedo.setObjectName("actionRedo")
+        self.actionRedo.setEnabled(False)
 
         self.actionWindow = QtWidgets.QAction(MainWindow)
         self.actionWindow.setObjectName("actionWindow")
@@ -378,33 +415,46 @@ class Ui_Win2(Ui_MainWindow):
         self.actionInsert.triggered.connect(self.addimage)
 
         self.actionNew_Project = QtWidgets.QAction(Win2)
-        self.actionNew_Project.setEnabled(False)
         self.actionNew_Project.setObjectName("actionNew_Project")
+        self.actionNew_Project.setEnabled(False)
+
         self.actionOpen_Project = QtWidgets.QAction(Win2)
-        self.actionOpen_Project.setEnabled(False)
         self.actionOpen_Project.setObjectName("actionOpen_Project")
+        self.actionOpen_Project.setEnabled(False)
+
         self.actionUndo = QtWidgets.QAction(Win2)
-        self.actionUndo.setEnabled(False)
         self.actionUndo.setObjectName("actionUndo")
+        self.actionUndo.setEnabled(False)
+
         self.actionRedo = QtWidgets.QAction(Win2)
         self.actionRedo.setObjectName("actionRedo")
+        self.actionRedo.setEnabled(False)
+
         self.actionUndo_2 = QtWidgets.QAction(Win2)
-        self.actionUndo_2.setCheckable(True)
+        # self.actionUndo_2.setCheckable(True)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(os.getcwd() + "/icons/undo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionUndo_2.setIcon(icon1)
         self.actionUndo_2.setObjectName("actionUndo_2")
+        self.actionUndo_2.setEnabled(False)
+
         self.actionRedo_2 = QtWidgets.QAction(Win2)
-        self.actionRedo_2.setCheckable(True)
+        # self.actionRedo_2.setCheckable(True)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(os.getcwd() + "/icons/redo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionRedo_2.setIcon(icon2)
         self.actionRedo_2.setObjectName("actionRedo_2")
+        self.actionRedo_2.setEnabled(False)
+
         self.actionQuit = QtWidgets.QAction(Win2)
         self.actionQuit.setObjectName("actionQuit")
+        self.actionQuit.triggered.connect(Win2.close)
+
         self.actionSave = QtWidgets.QAction(Win2)
         self.actionSave.setObjectName("actionSave")
-        self.menuFile.addAction(self.actionUndo)
+        self.actionSave.setEnabled(False)
+
+        self.menuFile.addAction(self.actionNew_Project)
         self.menuFile.addAction(self.actionOpen_Project)
         self.menuFile.addAction(self.actionSave)
         self.menuFile.addAction(self.actionQuit)
@@ -444,7 +494,7 @@ class Ui_Win2(Ui_MainWindow):
         self.actionNew_Project.setShortcut(_translate("Win2", "Ctrl+N"))
         self.actionOpen_Project.setText(_translate("Win2", "Open Project"))
         self.actionOpen_Project.setShortcut(_translate("Win2", "Ctrl+O"))
-        self.actionUndo.setText(_translate("Win2", "New Project"))
+        self.actionUndo.setText(_translate("Win2", "undo"))
         self.actionRedo.setText(_translate("Win2", "redo"))
         self.actionUndo_2.setText(_translate("Win2", "undo"))
         self.actionUndo_2.setShortcut(_translate("Win2", "Ctrl+Z"))
@@ -562,6 +612,7 @@ class Ui_Ocr(Ui_Win2):
         self.menubar.setObjectName("menubar")
         self.menuEdit = QtWidgets.QMenu(self.menubar)
         self.menuEdit.setObjectName("menuEdit")
+        self.menuEdit.setEnabled(False)
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setEnabled(False)
         self.menuFile.setObjectName("menuFile")
@@ -620,6 +671,12 @@ class Ui_Form(Ui_Ocr):
     def openWindow(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_MainWindow()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def prevWindow(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_Ocr()
         self.ui.setupUi(self.window)
         self.window.show()
 
@@ -803,6 +860,8 @@ class Ui_Form(Ui_Ocr):
         self.pushButton_2.setGeometry(QtCore.QRect(290, 570, 113, 32))
         self.pushButton_2.setMinimumSize(QtCore.QSize(113, 32))
         self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.clicked.connect(self.prevWindow)
+        self.pushButton_2.clicked.connect(Form.close)
 
         self.pushButton_3 = QtWidgets.QPushButton(Form)
         self.pushButton_3.setGeometry(QtCore.QRect(480, 10, 100, 100))
@@ -823,7 +882,7 @@ class Ui_Form(Ui_Ocr):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.Finish.setText(_translate("Form", "Finish"))
-        self.pushButton_2.setText(_translate("Form", "Save"))
+        self.pushButton_2.setText(_translate("Form", "Back"))
         self.pushButton_3.setText(_translate("Form","VBR_Keys"))
 
 if __name__ == "__main__":
