@@ -14,11 +14,11 @@ from hed.utils.io import IO
 from hed.models.vgg16 import Vgg16
 
 class Hed_test():
-    def start(self,img_path,txt_path,args = os.getcwd() + "/hed/configs/hed.yaml"):
+    def start(self,img_path,txt_path,args = os.getcwd() + "\\hed\\configs\\hed.yaml"):
         io = IO()
         self.cfgs = io.read_yaml_file(args)
         self.model = Vgg16(self.cfgs, run='testing')
-        meta_model_file = "hed/models/hed-model-5000"
+        meta_model_file = "hed\\models\\hed-model-5000"
         saver = tf.train.Saver()
         session = self.get_session(0.4)
         saver.restore(session, meta_model_file)

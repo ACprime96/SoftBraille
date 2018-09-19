@@ -29,8 +29,8 @@ class imgt():
             # rf = open("/Users/adityachandra/Environments/myocr/Gui/config.json")
             # config = json.load(rf)
             # rf.close();
-            f=open(get_path.get_english(),'w+')
+            f=open(get_path.get_english(),'w+',encoding="utf-8")
             f.write(pytesseract.image_to_string(custom))
             f.close()
         except Exception as e:
-            print("Image quality is poor!!") 
+            print("Image quality is poor!!")

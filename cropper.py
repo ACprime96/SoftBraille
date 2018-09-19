@@ -44,7 +44,7 @@ class QExampleLabel (QtWidgets.QLabel):
             c=c+1
             self.lab.setText("Selected :"+str(c))
             stri=get_path.get_images()
-            file_path = stri+"/output"+str(c)+".png"
+            file_path = stri+"\\output"+str(c)+".png"
             cropQPixmap.save(file_path)
             i_obj = img_braille(file_path)
             i_obj.convert_img()
@@ -52,4 +52,4 @@ class QExampleLabel (QtWidgets.QLabel):
             try:
                 self.currentQRubberBand.hide()
             except Exception as e:
-                pass 
+                pass

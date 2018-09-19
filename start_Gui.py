@@ -100,7 +100,7 @@ class Ui_MainWindow(object):
         global p
         p=p+1
         pg="------------------------------------------- Page"+str(p)
-        pgFile=open(get_path.get_english(),"a")
+        pgFile=open(get_path.get_english(),"a",encoding="utf-8")
         pgFile.write("\n"+pg)
         pgFile.close()
 
@@ -277,11 +277,12 @@ class Ui_Win2(Ui_MainWindow):
 
     def addimage(self):
         fil=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
+        fil = fil.replace('/','\\\\')
         try:
-            fi = open(fil,"r")
+            fi = open(fil,"r",encoding="utf-8")
             contents=fi.read()
             fi.close()
-            f=open(get_path.get_english(),'a+')
+            f=open(get_path.get_english(),'a+',encoding="utf-8")
             f.write("\n"+"\n"+contents)
             self.textEdit.append(contents)
             f.close()
@@ -372,7 +373,7 @@ class Ui_Win2(Ui_MainWindow):
         self.actionInsert = QtWidgets.QAction(Win2)
         # self.actionInsert.setCheckable(True)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(os.getcwd() + "/icons/insert.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(os.getcwd() + "\\icons\\insert.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionInsert.setIcon(icon)
         self.actionInsert.setObjectName("actionInsert")
         self.actionInsert.triggered.connect(self.addimage)
@@ -391,13 +392,13 @@ class Ui_Win2(Ui_MainWindow):
         self.actionUndo_2 = QtWidgets.QAction(Win2)
         self.actionUndo_2.setCheckable(True)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(os.getcwd() + "/icons/undo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(os.getcwd() + "\\icons\\undo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionUndo_2.setIcon(icon1)
         self.actionUndo_2.setObjectName("actionUndo_2")
         self.actionRedo_2 = QtWidgets.QAction(Win2)
         self.actionRedo_2.setCheckable(True)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(os.getcwd() + "/icons/redo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(os.getcwd() + "\\icons\\redo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionRedo_2.setIcon(icon2)
         self.actionRedo_2.setObjectName("actionRedo_2")
         self.actionQuit = QtWidgets.QAction(Win2)
@@ -511,7 +512,7 @@ class Ui_Ocr(Ui_Win2):
 
     def updateText(self):
         updatedText=self.textEdit.toPlainText()
-        f=open(get_path.get_english(),'w+')
+        f=open(get_path.get_english(),'w+',encoding="utf-8")
         f.write(updatedText)
         f.close()
 
@@ -751,7 +752,7 @@ class Ui_Form(Ui_Ocr):
 
     def updateText(self):
         updatedText=self.textEdit.toPlainText()
-        f=open(get_path.get_braille(),'w+')
+        f=open(get_path.get_braille(),'w+',encoding="utf-8")
         f.write(updatedText)
         f.close()
 
@@ -779,9 +780,9 @@ class Ui_Form(Ui_Ocr):
         eng=" A1B'K2L@CIF/MSP\"E3H9O6R^DJG>NTQ,*5<-U8V.%[$+X!&;:4\\0Z7(_?W]#Y)="
         braille="⠀⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿"
         transtab = str.maketrans(eng, braille)
-        f1=open(get_path.get_english(),'r')
+        f1=open(get_path.get_english(),'r',encoding="utf-8")
         contents=f1.read().upper()
-        b1=open(get_path.get_braille(),'a')
+        b1=open(get_path.get_braille(),'a',encoding="utf-8")
         b1.write(contents.translate(transtab))
         f1.close()
         b1.close()
