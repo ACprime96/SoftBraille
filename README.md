@@ -10,7 +10,7 @@ using any braille printer.
 
 ## Step-1  
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
           
 ## Step-2
