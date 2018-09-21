@@ -20,7 +20,7 @@ class Hed_test():
         self.model = Vgg16(self.cfgs, run='testing')
         meta_model_file = "hed\\models\\hed-model-5000"
         saver = tf.train.Saver()
-        session = self.get_session(0.4)
+        session = self.get_session()
         saver.restore(session, meta_model_file)
         self.model.setup_testing(session)
         im = self.fetch_img(img_path)
@@ -50,16 +50,18 @@ class Hed_test():
 
         return image
 
-    def get_session(self,gpu_fraction):
+    def get_session(self):
 
-
-        num_threads = int(1)
-        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_fraction)
-
-        if num_threads:
-            return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, intra_op_parallelism_threads=num_threads))
-        else:
-            return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+        config = tf.ConfigProto(device_count = {'GPU': 0})
+        sess = tf.Session(config=config)
+        return sess;
+        # num_threads = int(1)
+        # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_fraction)
+        #
+        # if num_threads:
+        #     return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, intra_op_parallelism_threads=num_threads))
+        # else:
+        #     return tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
     def save_egdemaps(self, em_maps, txt_path):
 
