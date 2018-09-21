@@ -18,16 +18,13 @@ from imgtes import imgt
 import main as brl
 import json
 import get_path
+import textwrap
 
 global p
 p=0
 # g1
 class Ui_MainWindow(object):
-    # s=""
-    # ctr=0
-    # con_f = open('/Users/adityachandra/Environments/myocr/Gui/config.json')
-    # config = json.load(con_f)
-    # con_f.close()
+
     global fname
     fname=""
     global File_path
@@ -42,7 +39,6 @@ class Ui_MainWindow(object):
         self.Dialog = QtWidgets.QDialog()
         self.ui = Ui_Dialog()
         self.ui.setupUi(self.Dialog)
-        # self.config=self.ui.get_stuff()
         self.Dialog.show()
 
 # Open Project starts here
@@ -78,12 +74,20 @@ class Ui_MainWindow(object):
 # Open Project ends here
 
     def loadpro(self):
-        global fname
-        fname=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
-        self.scene=QGraphicsScene()
-        a=QPixmap(fname)
-        self.scene.addPixmap(a.scaled(560,560,QtCore.Qt.IgnoreAspectRatio,QtCore.Qt.SmoothTransformation))
-        self.graphicsView.setScene(self.scene)
+        if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
+            global fname
+            fname=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
+            self.scene=QGraphicsScene()
+            a=QPixmap(fname)
+            self.scene.addPixmap(a.scaled(560,560,QtCore.Qt.IgnoreAspectRatio,QtCore.Qt.SmoothTransformation))
+            self.graphicsView.setScene(self.scene)
+        else:
+            self.msg = QtWidgets.QMessageBox()
+            self.msg.setIcon(QtWidgets.QMessageBox.Critical)
+            self.msg.setText("Create a new project or open existing Project!!\n Check integirty of your project some files may not be present ")
+            self.msg.setWindowTitle("ERROR!!")
+            self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            self.msg.show()
 
     def roi(self):
         self.wid = QtWidgets.QWidget()
@@ -129,18 +133,11 @@ class Ui_MainWindow(object):
                 self.listWidget.addItem(item)
                 self.listWidget.setItemWidget(item,label)
 
-    def appendPageNo(self):
-        global p
-        p=p+1
-        pg="------------------------------------------- Page"+str(p)
-        pgFile=open(get_path.get_english(),"a")
-        pgFile.write("\n"+pg)
-        pgFile.close()
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1069, 690)
         MainWindow.setMinimumSize(QtCore.QSize(1069, 690))
+        MainWindow.setMaximumSize(QtCore.QSize(1069, 690))
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -171,16 +168,13 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(30, 70, 91, 21))
-        self.label.setMinimumSize(QtCore.QSize(91, 21))
+        self.label.setGeometry(QtCore.QRect(30, 60, 101, 31))
+        self.label.setMinimumSize(QtCore.QSize(101, 31))
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label.setFont(font)
         self.label.setObjectName("label")
 
-        # self.mdiArea = QtWidgets.QMdiArea(self.centralwidget)
-        # self.mdiArea.setGeometry(QtCore.QRect(290, 70, 691, 511))
-        # self.mdiArea.setObjectName("mdiArea")
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
         self.graphicsView.setGeometry(QtCore.QRect(290, 70, 691, 511))
         self.graphicsView.setObjectName("graphicsView")
@@ -243,6 +237,7 @@ class Ui_MainWindow(object):
 
         self.actionLoad = QtWidgets.QAction(MainWindow)
         self.actionLoad.setObjectName("actionLoad")
+        self.actionLoad.setEnabled(True)
         self.actionLoad.triggered.connect(self.loadpro)
 
         self.actionSave = QtWidgets.QAction(MainWindow)
@@ -313,7 +308,7 @@ class Ui_Win2(Ui_MainWindow):
         self.window.show()
 
     def addimage(self):
-        fil=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
+        fil=QFileDialog.getOpenFileName(None,'Open file',get_path.get_folder_path())[0]
         try:
             fi = open(fil,"r")
             contents=fi.read()
@@ -329,12 +324,9 @@ class Ui_Win2(Ui_MainWindow):
         Win2.setObjectName("Win2")
         Win2.resize(826, 667)
         Win2.setMinimumSize(QtCore.QSize(826, 667))
+        Win2.setMaximumSize(QtCore.QSize(826, 667))
         self.centralwidget = QtWidgets.QWidget(Win2)
         self.centralwidget.setObjectName("centralwidget")
-        # self.mdiArea = QtWidgets.QMdiArea(self.centralwidget)
-        # self.mdiArea.setGeometry(QtCore.QRect(20, 30, 381, 511))
-        # self.mdiArea.setMinimumSize(QtCore.QSize(381, 511))
-        # self.mdiArea.setObjectName("mdiArea")
 
         global fname
         self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
@@ -349,18 +341,13 @@ class Ui_Win2(Ui_MainWindow):
         self.textEdit.setGeometry(QtCore.QRect(420, 30, 381, 511))
         self.textEdit.setMinimumSize(QtCore.QSize(381, 511))
         self.textEdit.setObjectName("textEdit")
+
         global text
-        # rf = open("config.json")
-        # config = json.load(rf)
-        # rf.close()
         imgt_obj = imgt(fname)
         imgt_obj.imgtes()
         text=open(get_path.get_english(),'r+', encoding="utf8")
-        # text = open(self.config["english"],"r")
         f=text.read()
         self.textEdit.setPlainText(f)
-        # self.fs_watcher = QtCore.QFileSystemWatcher(/Users/adityachandra/test/eng.txt')
-        # self.fs_watcher.fileChanged.connect(self.textEdit.setPlainText(f))
 
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(30, 10, 101, 16))
@@ -380,7 +367,6 @@ class Ui_Win2(Ui_MainWindow):
         self.pushButton_2.setObjectName("pushButton_2")
 
         self.pushButton_2.clicked.connect(self.openWindow)
-        self.pushButton_2.clicked.connect(self.appendPageNo)
         self.pushButton_2.clicked.connect(Win2.close)
 
         Win2.setCentralWidget(self.centralwidget)
@@ -503,27 +489,6 @@ class Ui_Win2(Ui_MainWindow):
         self.actionQuit.setText(_translate("Win2", "Quit"))
         self.actionSave.setText(_translate("Win2", "Save"))
 
-# import insert_rc
-# g3
-
-# class CustomLineEdit(QtWidgets.QTextEdit):
-#     def __init__(self, parent = None):
-#         super(CustomLineEdit, self).__init__()
-#         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-#         self.customContextMenuRequested.connect(self.__contextMenu)
-#
-#     def __contextMenu(self):
-#         self._normalMenu = self.createStandardContextMenu()
-#         self._addCustomMenuItems(self._normalMenu)
-#         self._normalMenu.exec_(QtGui.QCursor.pos())
-#
-#     def _addCustomMenuItems(self, menu):
-#         menu.addSeparator()
-#         menu.addAction(u'Test', self.testFunc)
-#
-#     def testFunc(self):
-#         print ("Call")
-
 class Ui_Ocr(Ui_Win2):
     def openWindow(self):
         self.window = QtWidgets.QMainWindow()
@@ -546,9 +511,6 @@ class Ui_Ocr(Ui_Win2):
     def mytext(self):
         cursor = self.textEdit.textCursor()
         textSelected = cursor.selectedText()
-        # example=brl.translate(textSelected)
-        # s = brl.toUnicodeSymbols(example, flatten=True)
-        # cursor.insertText(s)
         example=brl.text2nemeth(textSelected)
         if(example == textSelected):
             self.msg = QtWidgets.QMessageBox()
@@ -565,10 +527,11 @@ class Ui_Ocr(Ui_Win2):
         f.write(updatedText)
         f.close()
 
-
     def setupUi(self, Ocr):
         Ocr.setObjectName("Ocr")
         Ocr.resize(801, 669)
+        Ocr.setMinimumSize(QtCore.QSize(801, 669))
+        Ocr.setMaximumSize(QtCore.QSize(801, 669))
         self.centralwidget = QtWidgets.QWidget(Ocr)
         self.centralwidget.setObjectName("centralwidget")
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
@@ -587,7 +550,6 @@ class Ui_Ocr(Ui_Win2):
         self.nem = QtWidgets.QPushButton(self.centralwidget)
         self.nem.setGeometry(QtCore.QRect(630, 10, 161, 61))
         self.nem.setObjectName("nem")
-        # self.nem.clicked.connect(self.openWindow)
         self.nem.clicked.connect(self.mytext)
 
 

@@ -57,44 +57,13 @@ class Ui_Dialog(object):
         # create new directory
         s = self.lineEdit.text()
         try:
-            # rf = open("/Users/adityachandra/Environments/myocr/Gui/config.json")
-            # config = json.load(rf)
-            # rf.close()
-            # wf = open("/Users/adityachandra/Environments/myocr/Gui/config.json","w")
             home = str(Path.home())
-
-            # os.chdir('/Users/adityachandra')
-            # os.mkdir(s)
-            # os.chdir('/Users/adityachandra/'+s)
-            # open("eng.txt","w")
-            # open("br.txt","w")
-            # os.mkdir('images')
-            # os.mkdir('braille_images')
-            # f1="/Users/adityachandra/" + s
-
-            # os.chdir(home)
             f1=home + "/" + s
             os.mkdir(f1)
-            # print (f1)
-            # os.chdir(f1)
             open(f1+"/eng.txt","w")
             open(f1+"/br.txt","w")
             os.mkdir(f1+'/images')
             os.mkdir(f1+'/braille_images')
-
-            # print(f1)
-
-
-            # print(config)
-            # print(f1)
-            # config["folder_path"] = f1
-            # config["images"] = f1 + "/images"
-            # config["english"] = f1 + "/eng.txt"
-            # config["braille"] = f1 + "/br.txt"
-            #
-            #
-            # json.dump(config,wf)
-            # wf.close()
             get_path.get_file_path(f1)
 
 
@@ -104,20 +73,6 @@ class Ui_Dialog(object):
                 self.msg = QtWidgets.QMessageBox()
                 self.msg.setIcon(QtWidgets.QMessageBox.Critical)
                 self.msg.setText("This Folder Already Exists")
-                # f=open('/Users/adityachandra/Environments/myocr/Gui/config.json','w')
-                # json.dump(config,f)
-                # wf.close()
                 self.msg.setWindowTitle("ERROR!!")
                 self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
                 self.msg.show()
-    def get_stuff(self):
-        return self.config
-
-# if __name__ == "__main__":
-#     import sys
-#     app = QtWidgets.QApplication(sys.argv)
-#     Dialog = QtWidgets.QDialog()
-#     ui = Ui_Dialog()
-#     ui.setupUi(Dialog)
-#     Dialog.show()
-#     sys.exit(app.exec_())
