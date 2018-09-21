@@ -73,6 +73,7 @@ class Ui_MainWindow(object):
             self.prolist.addItems(list)
             self.prolist.itemClicked.connect(self.project_Selected)
             self.prolist.itemClicked.connect(self.prolist.close)
+            self.prolist.clicked.connect(self.clip)
             self.prolist.show()
 
 # Open Project ends here
@@ -129,13 +130,13 @@ class Ui_MainWindow(object):
                 self.listWidget.addItem(item)
                 self.listWidget.setItemWidget(item,label)
 
-    def appendPageNo(self):
-        global p
-        p=p+1
-        pg="------------------------------------------- Page"+str(p)
-        pgFile=open(get_path.get_english(),"a")
-        pgFile.write("\n"+pg)
-        pgFile.close()
+    # def appendPageNo(self):
+    #     global p
+    #     p=p+1
+    #     pg="------------------------------------------- Page"+str(p)
+    #     pgFile=open(get_path.get_english(),"a")
+    #     pgFile.write("\n"+pg)
+    #     pgFile.close()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -314,6 +315,7 @@ class Ui_Win2(Ui_MainWindow):
 
     def addimage(self):
         fil=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
+        fil = fil.replace('/','\\\\')
         try:
             fi = open(fil,"r",encoding = "utf-8")
             contents=fi.read()
@@ -380,7 +382,7 @@ class Ui_Win2(Ui_MainWindow):
         self.pushButton_2.setObjectName("pushButton_2")
 
         self.pushButton_2.clicked.connect(self.openWindow)
-        self.pushButton_2.clicked.connect(self.appendPageNo)
+#        self.pushButton_2.clicked.connect(self.appendPageNo)
         self.pushButton_2.clicked.connect(Win2.close)
 
         Win2.setCentralWidget(self.centralwidget)
@@ -564,7 +566,13 @@ class Ui_Ocr(Ui_Win2):
         f=open(get_path.get_english(),'w+',encoding = "utf-8")
         f.write(updatedText)
         f.close()
-
+    def appendPageNo(self):
+        global p
+        p=p+1
+        pg="------------------------------------------- Page"+str(p)
+        pgFile=open(get_path.get_english(),"a")
+        pgFile.write("\n"+pg)
+        pgFile.close()
 
     def setupUi(self, Ocr):
         Ocr.setObjectName("Ocr")
@@ -603,6 +611,7 @@ class Ui_Ocr(Ui_Win2):
         self.pushButton_2.setGeometry(QtCore.QRect(622, 580, 141, 32))
         self.pushButton_2.setObjectName("pushButton_2")
 
+        self.pushButton_2.clicked.connect(self.appendPageNo)
         self.pushButton_2.clicked.connect(self.open2Window)
         self.pushButton_2.clicked.connect(Ocr.close)
 
@@ -854,6 +863,7 @@ class Ui_Form(Ui_Ocr):
         self.Finish.setObjectName("Finish")
 
         self.Finish.clicked.connect(self.openWindow)
+        # self.Finish.clicked.connect(self.appendPageNo)
         self.Finish.clicked.connect(Form.close)
 
         self.pushButton_2 = QtWidgets.QPushButton(Form)
