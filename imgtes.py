@@ -33,4 +33,6 @@ class imgt():
             f.write(pytesseract.image_to_string(custom))
             f.close()
         except Exception as e:
-            print("Image quality is poor!!") 
+            print("Image quality is poor!!")
+            f=open(get_path.get_english(),'w+')
+            f.close() 
