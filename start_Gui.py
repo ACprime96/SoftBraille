@@ -39,7 +39,33 @@ class Ui_MainWindow(object):
         self.ui.setupUi(self.Dialog)
         self.Dialog.show()
 
-# Open Project starts here
+
+    def check_state(self):
+        if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
+            self.Next.clicked.connect(self.openWindow)
+            global main_win
+            self.Next.clicked.connect(main_win.close)
+
+        else:
+            self.msg = QtWidgets.QMessageBox()
+            self.msg.setIcon(QtWidgets.QMessageBox.Critical)
+            self.msg.setText("Create a new project or open an existing project\nCheck Integrity of your project, some files mat not be present")
+            self.msg.setWindowTitle("ERROR!!")
+            self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            self.msg.show()
+
+    def check_state_crop(self):
+        if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
+            self.Sav.clicked.connect(self.roi)
+        else:
+            self.msg = QtWidgets.QMessageBox()
+            self.msg.setIcon(QtWidgets.QMessageBox.Critical)
+            self.msg.setText("Create a new project or open an existing project\nCheck Integrity of your project, some files mat not be present")
+            self.msg.setWindowTitle("ERROR!!")
+            self.msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
+            self.msg.show()
+
+    # Open Project starts here
     def project_Selected(self,item):
         home=str(Path.home())
         fpath=home+"/"+item.text()
@@ -130,6 +156,11 @@ class Ui_MainWindow(object):
                 self.listWidget.addItem(item)
                 self.listWidget.setItemWidget(item,label)
 
+    def clear_image(self):
+        self.graphicsView.setScene(self.scene.clear())
+        global fname
+        fname = ""
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1069, 690)
@@ -180,21 +211,22 @@ class Ui_MainWindow(object):
 
 
         self.Convert = QtWidgets.QPushButton(self.centralwidget)
-        self.Convert.setEnabled(False)
         self.Convert.setGeometry(QtCore.QRect(680, 600, 113, 32))
         self.Convert.setObjectName("Convert")
+        self.Convert.clicked.connect(self.clear_image)
 
         self.Sav = QtWidgets.QPushButton(self.centralwidget)
         self.Sav.setGeometry(QtCore.QRect(810, 600, 113, 32))
         self.Sav.setObjectName("Sav")
-        self.Sav.clicked.connect(self.roi)
-
+        # self.Sav.clicked.connect(self.roi)
+        self.Sav.clicked.connect(self.check_state_crop)
         self.Next = QtWidgets.QPushButton(self.centralwidget)
         self.Next.setGeometry(QtCore.QRect(950, 600, 113, 32))
         self.Next.setObjectName("Next")
+        self.Next.clicked.connect(self.check_state)
 
-        self.Next.clicked.connect(self.openWindow)
-        self.Next.clicked.connect(MainWindow.close)
+        global main_win
+        main_win = MainWindow
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -271,7 +303,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Clipboard"))
-        self.Convert.setText(_translate("MainWindow", "Convert"))
+        self.Convert.setText(_translate("MainWindow", "Clear"))
         self.Sav.setText(_translate("MainWindow", "Crop Image"))
         self.Next.setText(_translate("MainWindow", "Next"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
@@ -313,6 +345,7 @@ class Ui_Win2(Ui_MainWindow):
             f.close()
         except Exception as e:
             print("No file chosen!!")
+
 
     def setupUi(self, Win2):
         Win2.setObjectName("Win2")
@@ -755,6 +788,16 @@ class Ui_Form(Ui_Ocr):
         nine.clicked.connect(lambda:self.on_click(nine))
         self.horizontalGroupBox.setLayout(self.layout)
 
+    def write_output(self):
+        eng=" A1B'K2L@CIF/MSP\"E3H9O6R^DJG>NTQ,*5<-U8V.%[$+X!&;:4\\0Z7(_?W]#Y)="
+        braille="⠀⠁⠂⠃⠄⠅⠆⠇⠈⠉⠊⠋⠌⠍⠎⠏⠐⠑⠒⠓⠔⠕⠖⠗⠘⠙⠚⠛⠜⠝⠞⠟⠠⠡⠢⠣⠤⠥⠦⠧⠨⠩⠪⠫⠬⠭⠮⠯⠰⠱⠲⠳⠴⠵⠶⠷⠸⠹⠺⠻⠼⠽⠾⠿"
+        transtab2 = str.maketrans( braille, eng)
+        f1=open(get_path.get_english(),'r',encoding = "utf-8")
+        f_out = open(get_path.get_folder_path()+"\\output.txt",'a',encoding = "utf-8")
+        f_out.write(f1.read().translate(transtab2))
+        f_out.close()
+        f1.close()
+
     def updateText(self):
         updatedText=self.textEdit.toPlainText()
         f=open(get_path.get_braille(),'w+',encoding = "utf-8")
@@ -799,7 +842,7 @@ class Ui_Form(Ui_Ocr):
         self.Finish.setGeometry(QtCore.QRect(420, 570, 113, 32))
         self.Finish.setMinimumSize(QtCore.QSize(113, 32))
         self.Finish.setObjectName("Finish")
-
+        self.Finish.clicked.connect(self.write_output)
         self.Finish.clicked.connect(self.openWindow)
         self.Finish.clicked.connect(Form.close)
 

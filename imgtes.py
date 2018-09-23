@@ -21,16 +21,11 @@ class imgt():
             boxFilter = np.ones( (9,9), np.float32) / 81.0
             kernel = kernel - boxFilter
             custom = cv2.filter2D(imgIn, -1, kernel)
-            # img1 = cv2.imread("/Users/adityachandra/Downloads/rabindranath.jpg",0)
             res1 = cv2.resize(custom,(0,0),fx=0.75,fy=0.75)
-            # config = {}
-            # with open('config.json','r') as r_config:
-            #     config = json.load(r_config)
-            # rf = open("/Users/adityachandra/Environments/myocr/Gui/config.json")
-            # config = json.load(rf)
-            # rf.close();
             f=open(get_path.get_english(),'w+',encoding="utf-8")
             f.write(pytesseract.image_to_string(custom))
             f.close()
         except Exception as e:
             print("Image quality is poor!!")
+            f=open(get_path.get_english(),'w+',encoding="utf-8")
+            f.close()
