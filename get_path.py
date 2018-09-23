@@ -53,3 +53,9 @@ def get_braille_images():
     config = json.load(rf)
     rf.close()
     return config["br_img"]
+
+def get_folder_path():
+    rf = open(home_path + "\\config.json")
+    config = json.load(rf)
+    rf.close()
+    return config["folder_path"]
