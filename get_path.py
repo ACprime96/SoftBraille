@@ -1,9 +1,25 @@
 import json
-# from pathlib import Path
+from pathlib import Path
 # global home_path
 # home_path = str(Path.home())
 import os
 home_path = os.getcwd()
+
+# when project is closed
+def reset_config_file():
+    rf = open(home_path + "/config.json")
+    config = json.load(rf)
+    rf.close()
+    wf = open(home_path + "/config.json","w")
+    config["folder_path"] = str(Path.home())
+    config["images"] = str(Path.home())
+    config["english"] = str(Path.home())
+    config["braille"] = str(Path.home())
+    config["br_img"] = str(Path.home())
+    json.dump(config,wf)
+    wf.close()
+
+# when selected project is opened
 def set_project_path(f1):
     rf = open(home_path + "/config.json")
     config = json.load(rf)
@@ -17,6 +33,7 @@ def set_project_path(f1):
     json.dump(config,wf)
     wf.close()
 
+# when project is created
 def get_file_path(f1):
     rf = open(home_path + "/config.json")
     config = json.load(rf)

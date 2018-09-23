@@ -46,6 +46,7 @@ class Ui_MainWindow(object):
         home=str(Path.home())
         fpath=home+"/"+item.text()
         get_path.set_project_path(fpath)
+        self.clip()
 
     def openpro(self):
         home=str(Path.home())
@@ -72,8 +73,9 @@ class Ui_MainWindow(object):
             self.prolist.show()
 
     def check_state_crop(self):
-        if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
-            self.Sav.clicked.connect(self.roi)
+        if (get_path.get_folder_path() != str(Path.home())):
+            if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
+                self.Sav.clicked.connect(self.roi)
 
         else:
             self.msg = QtWidgets.QMessageBox()
@@ -84,10 +86,18 @@ class Ui_MainWindow(object):
             self.msg.show()
 
     def check_state(self):
-        if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
-            self.Next.clicked.connect(self.openWindow)
-            global main_win
-            self.Next.clicked.connect(main_win.close)
+        if (get_path.get_folder_path() != str(Path.home())):
+            if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
+                global fname
+                imgt_obj = imgt(fname)
+                imgt_obj.imgtes()
+                tes_file=open(get_path.get_english(),'r+', encoding="utf8")
+                global text
+                text=tes_file.read()
+                tes_file.close()
+                self.Next.clicked.connect(self.openWindow)
+                global main_win
+                self.Next.clicked.connect(main_win.close)
 
         else:
             self.msg = QtWidgets.QMessageBox()
@@ -100,13 +110,14 @@ class Ui_MainWindow(object):
 # Open Project ends here
 
     def loadpro(self):
-        if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
-            global fname
-            fname=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
-            self.scene=QGraphicsScene()
-            a=QPixmap(fname)
-            self.scene.addPixmap(a.scaled(560,560,QtCore.Qt.IgnoreAspectRatio,QtCore.Qt.SmoothTransformation))
-            self.graphicsView.setScene(self.scene)
+        if (get_path.get_folder_path() != str(Path.home())):
+            if(os.path.exists(get_path.get_folder_path()) and os.path.exists(get_path.get_images()) and os.path.exists(get_path.get_english()) and os.path.exists(get_path.get_braille()) and os.path.exists(get_path.get_braille_images())):
+                global fname
+                fname=QFileDialog.getOpenFileName(None,'Open file',os.getenv('HOME'))[0]
+                self.scene=QGraphicsScene()
+                a=QPixmap(fname)
+                self.scene.addPixmap(a.scaled(560,560,QtCore.Qt.IgnoreAspectRatio,QtCore.Qt.SmoothTransformation))
+                self.graphicsView.setScene(self.scene)
         else:
             self.msg = QtWidgets.QMessageBox()
             self.msg.setIcon(QtWidgets.QMessageBox.Critical)
@@ -373,11 +384,12 @@ class Ui_Win2(Ui_MainWindow):
         self.textEdit.setObjectName("textEdit")
 
         global text
-        imgt_obj = imgt(fname)
-        imgt_obj.imgtes()
-        text=open(get_path.get_english(),'r+', encoding="utf8")
-        f=text.read()
-        self.textEdit.setPlainText(f)
+        # imgt_obj = imgt(fname)
+        # imgt_obj.imgtes()
+        # tes_file=open(get_path.get_english(),'r+', encoding="utf8")
+        # text=tes_file.read()
+        # tes_file.close()
+        self.textEdit.setPlainText(text)
 
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(30, 10, 101, 16))
@@ -557,6 +569,7 @@ class Ui_Ocr(Ui_Win2):
         f.write(updatedText)
         f.close()
 
+    #for loading when next button of Win2 is clicked
     def setupUi(self, Ocr):
         Ocr.setObjectName("Ocr")
         Ocr.resize(801, 669)
@@ -568,9 +581,10 @@ class Ui_Ocr(Ui_Win2):
         self.textEdit.setGeometry(QtCore.QRect(120, 60, 501, 511))
         self.textEdit.setObjectName("textEdit")
         self.textEdit.setObjectName("textEdit")
-        global text
-        text=open(get_path.get_english(),'r+', encoding="utf8")
-        f=text.read()
+        # global text
+        tx=open(get_path.get_english(),'r+', encoding="utf8")
+        f=tx.read()
+        tx.close()
         self.textEdit.setPlainText(f)
         self.textEdit.textChanged.connect(self.updateText)
 
@@ -825,6 +839,7 @@ class Ui_Form(Ui_Ocr):
         cursor = self.textEdit.textCursor()
         cursor.insertText(insert_text)
 
+    #for loading when setupUi of Ocr is called
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(611, 617)
@@ -895,4 +910,7 @@ if __name__ == "__main__":
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
-    sys.exit(app.exec_())
+    # sys.exit(app.exec_())
+    app.exec_()
+    # reset config file when window is closed
+    get_path.reset_config_file()
