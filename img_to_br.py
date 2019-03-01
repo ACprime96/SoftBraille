@@ -44,7 +44,7 @@ class img_braille():
 
         global index
         index=index+1
-        fo = s+"/imbr"+str(index)+".txt"
+        fo = s+"\\imbr"+str(index)+".txt"
         a = Hed_test()
         # a.start(self.f1,fo)
         try:
