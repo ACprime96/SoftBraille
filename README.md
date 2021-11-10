@@ -26,3 +26,7 @@ The icon images path must be properly specified
 
 ## Step-5
 Run the main class `start_Gui.py`
+
+## OUTPUT
+
+![alt text](https://github.com/ACprime96/SoftBraille/blob/master/Demo/Demo.png?raw=true)
