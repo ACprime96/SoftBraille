@@ -1,10 +1,10 @@
 # SoftBraille
 ### Description
-This is a simple text editor developed to make any scanned document into its 
+This is a convenient tool developed to make any scanned document into its 
    
 braille equivalent such that both text and image can be aligned in a single page.
    
-The output is text file containg braille characters which can be later printed 
+The output is a text file containg braille characters which can be later printed 
    
 using any braille printer. 
 
