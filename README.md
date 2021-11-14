@@ -8,6 +8,9 @@ The output is a text file containg braille characters which can be later printed
    
 using any braille printer. 
 
+#### Authors : [Aditya C](https://github.com/ACprime96) &  [Anush Kumar V](https://anushkumarv.github.io/)
+
+
 ## Step-1  
 ```
 pip install -r requirements.txt
