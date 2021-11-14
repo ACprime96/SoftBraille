@@ -1,15 +1,12 @@
 # SoftBraille
 ### Description
-This is a convenient tool developed to make any scanned document into its 
-   
-braille equivalent such that both text and image can be aligned in a single page.
-   
+
+This is a convenient tool developed to help convert any scanned document into it's    
+braille equivalent such that both text and image can be aligned in a single page.<br>
 The output is a text file containg braille characters which can be later printed 
-   
 using any braille printer. 
 
 #### Authors : [Aditya C](https://github.com/ACprime96) &  [Anush Kumar V](https://anushkumarv.github.io/)
-
 
 ## Step-1  
 ```
